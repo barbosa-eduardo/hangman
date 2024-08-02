@@ -3,25 +3,48 @@
 # Contains the for generating the secret word
 class SecretWorld
   def initialize
-    @secret_word = File.readlines('google-10000-english-no-swears.txt').sample.chomp
-    @revealed_word = Array.new(secret_word.length, '_')
+    @secret = File.readlines('google-10000-english-no-swears.txt').sample.chomp
+    @discovered = Array.new(secret.length, '_')
   end
 
-  def reveal_letter(letter)
-    return if letter.nil? || letter.length != 1
-
-    letter = letter.downcase
-    secret_word.chars.each_with_index do |char, index|
-      revealed_word[index] = letter if letter == char
+  def guess(guess)
+    if guess.length > 1
+      guess_word(guess.downcase)
+    else
+      guess_letter(guess.downcase)
     end
-    revealed_word_string
   end
 
-  def revealed_word_string
-    revealed_word.join(' ')
+  def show_discovered_letters
+    discovered.join(' ')
+  end
+
+  def won?
+    !discovered.include?('_')
+  end
+
+  def reveal
+    temp = secret
+    reset
+    temp
+  end
+
+  def reset
+    @secret = File.readlines('google-10000-english-no-swears.txt').sample.chomp
+    @discovered = Array.new(secret.length, '_')
   end
 
   private
 
-  attr_accessor :secret_word, :revealed_word
+  attr_accessor :secret, :discovered
+
+  def guess_letter(guess)
+    discovered.each_index do |i|
+      discovered[i] = guess if secret[i] == guess
+    end
+  end
+
+  def guess_word(guess)
+    self.discovered = (guess == secret ? secret : discovered)
+  end
 end
