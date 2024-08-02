@@ -10,16 +10,18 @@ class Game
   end
 
   def play
+    puts
     TURNS_LIMIT.times do |i|
       print "Turn #{i + 1}: "
       play_round
+      break if secret_word.won?
     end
     end_game
   end
 
   def play_round
     secret_word.guess(gets.chomp)
-    puts secret_word.show_discovered_letters
+    puts secret_word.show_discovered_letters unless secret_word.won?
   end
 
   def end_game

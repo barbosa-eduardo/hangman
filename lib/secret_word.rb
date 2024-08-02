@@ -3,11 +3,13 @@
 # Contains the for generating the secret word
 class SecretWorld
   def initialize
-    @secret = File.readlines('google-10000-english-no-swears.txt').sample.chomp
+    @secret = p File.readlines('google-10000-english-no-swears.txt').sample.chomp
     @discovered = Array.new(secret.length, '_')
   end
 
   def guess(guess)
+    return if won?
+
     if guess.length > 1
       guess_word(guess.downcase)
     else
