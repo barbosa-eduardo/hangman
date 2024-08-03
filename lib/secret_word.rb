@@ -15,9 +15,10 @@ class SecretWorld
     else
       guess_letter(guess.downcase)
     end
+    fetch_current_progress
   end
 
-  def show_discovered_letters
+  def fetch_current_progress
     discovered.join(' ')
   end
 
